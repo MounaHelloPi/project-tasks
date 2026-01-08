@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
     })
@@ -17,5 +17,12 @@ export async function POST(request: Request) {
         redirect('/?error=invalid_credentials')
     }
 
+    if (data.user) {
+        // Successful signin, redirect to app
+        // App layout will handle organization setup if needed
+        redirect('/app')
+    }
+
+    // Fallback redirect
     redirect('/app')
 }
