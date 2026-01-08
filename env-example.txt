@@ -1,0 +1,10 @@
+# Supabase Configuration
+# Get these from: https://supabase.com/dashboard/project/YOUR_PROJECT/settings/api
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key-here
+
+# Application Configuration
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Optional: Database URL for direct database access (not needed for basic operation)
+# DATABASE_URL=postgresql://postgres:password@db.your-project-id.supabase.co:5432/postgres
