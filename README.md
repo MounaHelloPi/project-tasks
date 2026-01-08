@@ -1,26 +1,14 @@
 # Projects & Tasks
 
-A modern project management application built with Next.js 16, TypeScript, and Supabase. This app lets teams organize work with organization-based access control, real-time collaboration, and secure Google OAuth authentication.
+A project management application built with Next.js 16, TypeScript, and Supabase with email-password authentication.
 
-## 🚀 Features
-
-- **Organization Management**: Create and manage organizations with role-based permissions
-- **Project Tracking**: Organize tasks within projects with real-time updates
-- **Team Collaboration**: Invite members with different permission levels (owner/member)
-- **Secure Authentication**: Google OAuth integration with Supabase Auth
-- **Activity Logging**: Track all organization activities and changes
-- **Modern UI**: Clean, responsive interface built with Tailwind CSS
-
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js 18 or higher
-- npm or yarn package manager
-- Supabase account (free tier available)
-- Google Cloud Console account (for OAuth setup)
+- npm package manager
+- Supabase account
 
-## 🛠 Quick Setup
-
-Getting started is straightforward. Here's the complete setup process:
+## Setup Steps
 
 ### 1. Clone and Install
 
@@ -32,94 +20,56 @@ npm install
 
 ### 2. Environment Variables
 
-Copy the example file and configure your environment:
-
 ```bash
 cp .env.example .env.local
 ```
 
-Fill in your Supabase credentials and app URL. The variables are explained in detail below.
+Configure your Supabase credentials and app URL.
 
-### 3. Supabase Setup
+### 3. Database Migration
 
-#### Database Schema & Security
+Run the SQL migration in Supabase SQL Editor:
 
-Run the database migration to create all tables and security policies:
-
-1. Go to your Supabase dashboard → **SQL Editor**
-2. Copy the entire contents of `fix-rls.sql`
-3. Paste and run it
-
-This creates all tables with Row Level Security policies that ensure users can only access data from their organizations.
-
-#### Google OAuth Configuration
-
-**In Google Cloud Console:**
-1. Visit [console.cloud.google.com](https://console.cloud.google.com)
-2. Create or select a project
-3. Enable the Google+ API
-4. Go to "Credentials" → "Create OAuth 2.0 Client ID"
-5. Set application type to "Web application"
-6. Add authorized redirect URI: `https://your-project.supabase.co/auth/v1/callback`
-7. Copy the Client ID and Client Secret
-
-**In Supabase:**
-1. Go to Authentication → Settings
-2. Set Site URL to your app's URL (e.g., `http://localhost:3000` for development)
-3. Go to Authentication → Providers
-4. Enable Google provider
-5. Paste your Client ID and Client Secret from Google Cloud Console
-6. Save changes
-
-### 4. Run Tests (Optional)
-
-Verify everything works correctly:
-
-```bash
-npm test  # Run the test suite
+```sql
+-- Execute contents of fix-rls.sql
 ```
 
-### 5. Start Development
+### 4. Authentication Setup
+
+**Supabase:**
+- Authentication → Settings → Set Site URL: `http://localhost:3000`
+- Email confirmation can be enabled in Settings if needed
+
+### 5. Start Application
 
 ```bash
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) and sign up with Google!
+Visit http://localhost:3000 and sign up with email/password.
 
-## 🔧 Environment Variables
+## Trade-offs
 
-Create a `.env.local` file by copying the example:
+**Email-Password Authentication:**
+- Used email-password authentication instead of Google OAuth
+- Reason: Google Cloud Console requires a valid credit card for OAuth setup
+- Trade-off: Less convenient for users vs more accessible development setup
+- Supabase provides built-in email/password auth with security features
 
-```bash
-cp .env.example .env.local
-```
+## Environment Variables
 
-Then fill in your actual values:
+Create `.env.local` from `.env.example`:
 
 ```env
-# Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-
-# Application Configuration
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-### Variable Explanations
-
-- **`NEXT_PUBLIC_SUPABASE_URL`**: Your Supabase project URL
-  - Found in Supabase Dashboard → Settings → API → Project URL
-  - Format: `https://[project-id].supabase.co`
-
-- **`NEXT_PUBLIC_SUPABASE_ANON_KEY`**: Public anonymous key for client-side operations
-  - Found in Supabase Dashboard → Settings → API → Project API keys
-  - Safe to expose in frontend code
-
-- **`NEXT_PUBLIC_SITE_URL`**: Your application's base URL
-  - `http://localhost:3000` for local development
-  - `https://yourdomain.com` for production
-  - Used for OAuth redirect URLs and email links
+**Variable Explanations:**
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project URL (Settings → API → Project URL)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Public anonymous key (Settings → API → Project API keys)
+- `NEXT_PUBLIC_SITE_URL`: Application base URL for redirects
 
 ## 🧪 Testing
 
@@ -156,7 +106,7 @@ npm run test -- --coverage  # Run with coverage report
 **🔐 Authentication & Access Control:**
 - [ ] Homepage loads without authentication
 - [ ] Accessing `/app` redirects to `/` when not logged in
-- [ ] Google OAuth signup works and creates user account
+- [ ] Email/password signup works and creates user account
 - [ ] New users are redirected to organization setup
 - [ ] Authenticated users can access protected routes
 - [ ] Sign out properly clears session
@@ -284,7 +234,7 @@ project-tasks/
 - Real-time subscriptions
 
 **Authentication:**
-- Google OAuth 2.0
+- Email/password authentication
 - Supabase Auth integration
 - Secure session management
 
@@ -325,7 +275,6 @@ The easiest way to deploy:
 
 3. **Supabase Configuration:**
    - Update Supabase site URL to: `https://your-app.vercel.app`
-   - Add production redirect URLs to Google OAuth
 
 4. **Deploy:** Click deploy and you're live!
 
@@ -341,7 +290,6 @@ npm start
 Make sure to:
 - Set production environment variables
 - Configure your domain in Supabase Auth settings
-- Update Google OAuth redirect URIs
 - Enable HTTPS for security
 
 ## 🤝 Contributing
@@ -375,8 +323,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Check that you've completed the organization setup flow
 
 **"Authentication not working"**
-- Verify Google OAuth credentials in Supabase → Authentication → Providers
-- Check that redirect URLs match: `https://your-project.supabase.co/auth/v1/callback`
+- Check Supabase Authentication settings
+- Verify email templates are configured
 - Ensure `NEXT_PUBLIC_SITE_URL` is set correctly
 
 ### Database Issues
