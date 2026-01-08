@@ -3,7 +3,7 @@
  */
 
 const { NextRequest } = require('next/server')
-const middleware = require('../middleware')
+const { default: middleware } = require('../../middleware')
 
 describe('Middleware Route Protection', () => {
   const createMockRequest = (pathname, user = null) => {

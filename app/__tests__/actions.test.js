@@ -9,6 +9,12 @@ jest.mock('../lib/supabase/server', () => ({
   createClient: jest.fn()
 }))
 
+// Mock Next.js functions
+jest.mock('next/navigation', () => ({
+  redirect: jest.fn(),
+  revalidatePath: jest.fn(),
+}))
+
 describe('Server Actions', () => {
   const mockSupabase = {
     auth: {
@@ -19,9 +25,9 @@ describe('Server Actions', () => {
         select: jest.fn(() => ({
           single: jest.fn()
         }))
-      })),
-      rpc: jest.fn()
-    }))
+      }))
+    })),
+    rpc: jest.fn()
   }
 
   beforeEach(() => {
